@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Login</title>
+	<link rel="stylesheet" href="css/login.css"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
+	<script src="js/login.js"></script>
+</head>
+<body>
+
+	<main>
+		<div class="login_wrapper transition-light">
+			<form class="login-form" id="js-login-form">
+				<label for="js-login-field" class="login-title">Для входа введите пароль</label>
+				<div class="input-field" id="js-input-field">
+					<input id="js-login-field" type="password" autocomplete="off" maxlength="24" oninput="checkValue()">
+					<button id="js-show-pass" type="button" class="btn show-pass fa" aria-hidden="true"></button>
+				</div>
+				<button id="js-login-submit" class="btn transition-light login-form-submit" type="submit">Войти</button>
+			</form>
+		</div>
+	</main>
+
+</body>
+</html>

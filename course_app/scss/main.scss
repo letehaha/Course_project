@@ -1,0 +1,117 @@
+@import 'includes/fonts.scss';
+@import 'includes/reset.scss';
+@import 'includes/vars.scss';
+@import 'includes/default-style.scss';
+
+.sidebar{
+	width: 170px;
+	height: 100vh;
+	background-color: rgba(52, 73, 94,1.0);
+	display: flex;
+	align-items: center;
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+}
+.pjax-content{
+	margin-left: $sidebar-width;
+	width: calc(100% - #{$sidebar-width});
+}
+.sidebar-panel{
+	width: 100%;
+	&__item-link{
+		padding: 20px 15px;
+		color: #fff;
+		transition: .3s;
+		cursor: pointer;
+		display: block;
+		&:hover{
+			background-color: rgba(44, 62, 80,1.0);
+		}
+		&.active{
+			background-color: rgba(44, 62, 80,1.0);
+		}
+	}
+}
+
+
+.form-title{
+	margin-bottom: 30px;
+}
+
+.form{
+	margin-bottom: 40px;
+	input,
+	select,
+	option,
+	textarea{
+		font-size: 16px;
+		padding: 5px 10px;
+		display: block;
+	}
+}
+.form-wrapper{
+	display: flex;
+	margin-bottom: 30px;
+	.form-wrapper_child{
+		&:not(:last-child){
+			margin-right: 20px;
+		}
+	}
+	label{
+		width: 200px;
+		select,
+		input{
+			width: 100%;
+		}
+	}
+}
+.accommodation-booking-checkbox-label,
+.accommodation-new-quest-checkbox-label{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.accommodation-booking-checkbox,
+	.accommodation-new-quest-checkbox{
+		margin-top: 10px;
+		width: 20px;
+		height: 20px;
+	}
+}
+
+.list_wrapper{display: flex;padding: 20px 0;}
+.list{
+	padding: 10px;
+	font-size: 14px;
+}
+.list__item{
+	display: flex;
+	border-bottom: 2px solid #ccc;
+	background-color: #eee;
+	&:nth-child(odd){
+		background-color: #fafafa;
+	}
+	&.changed_field{
+		background-color: #fff;
+		animation: 3s changed_field;
+	}
+}
+.list__info{
+	display: flex;
+	border-top: 2px solid #ccc;
+	border-bottom: 2px solid #ccc;
+	text-align: center;
+	font-size: 17px;
+}
+.list__item_cell{
+	padding: 3px 10px;
+	border-right: 2px solid #ccc;
+	&:first-child{
+		border-left: 2px solid #ccc;
+	}
+}
+
+@import 'pages/employees.scss';
+@import 'pages/rooms.scss';
+@import 'pages/accommodation.scss';
