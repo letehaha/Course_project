@@ -51,11 +51,10 @@
             <button type="button" class="change-room">Изменить</button>
             <button type="submit" id="js-save-change-room" class="save-change-room is-hide" data-id="<?= $id ?>">Сохранить изменения</button>
         </form>
-        <!-- <button type="button" class="delete" data-employee-id="<?= $value['id_employee'] ?>">Удалить</button> -->
     </div>
-    <pre>
+    <!-- <pre> -->
         <?php
-        print_r($services);
+        // print_r($services);
         ?>
-    </pre>
+    <!-- </pre> -->
 <?php } ?>

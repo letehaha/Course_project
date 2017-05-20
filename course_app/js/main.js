@@ -1,28 +1,28 @@
 $(document).ready(function() {
 
-	var loadPage = function(href){
-		$.ajax({
-			url: 'service.php',
-			method: 'GET',
-			cache: false,
-			data: {
-				link: href
-			},
-			success: function(data){
-				$('.pjax-content').html(data);
-				getEmployeesList();
-				getClientsList();
-				getRoomsList();
-				normilizeEmployeesTable();
-				normilizeRoomsTable();
-				setAccommodationInfo();
-			}
-		});
-	};
+	// var loadPage = function(href){
+	// 	$.ajax({
+	// 		url: 'service.php',
+	// 		method: 'GET',
+	// 		cache: false,
+	// 		data: {
+	// 			link: href
+	// 		},
+	// 		success: function(data){
+	// 			$('.pjax-content').html(data);
+	// 			getEmployeesList();
+	// 			getClientsList();
+	// 			getRoomsList();
+	// 			normilizeEmployeesTable();
+	// 			normilizeRoomsTable();
+	// 			setAccommodationInfo();
+	// 		}
+	// 	});
+	// };
 
-	$(window).on('popstate', function(){
-		loadPage(location.pathname.split('/').pop());
-	});
+	// $(window).on('popstate', function(){
+	// 	loadPage(location.pathname.split('/').pop());
+	// });
 
 	getEmployeesList();
 	getClientsList();
@@ -31,14 +31,14 @@ $(document).ready(function() {
 	normilizeRoomsTable();
 	setAccommodationInfo();
 
-	$(document).on('click', '.sidebar-panel__item-link', function(e) {
-		var href = $(this).attr('href');
-		$('.sidebar-panel__item-link').removeClass('active');
-		$(this).addClass('active');
-		history.pushState(null, null, href);
-		loadPage(href);
-		e.preventDefault();
-	});
+	// $(document).on('click', '.sidebar-panel__item-link', function(e) {
+	// 	var href = $(this).attr('href');
+	// 	$('.sidebar-panel__item-link').removeClass('active');
+	// 	$(this).addClass('active');
+	// 	history.pushState(null, null, href);
+	// 	loadPage(href);
+	// 	e.preventDefault();
+	// });
 
 	// по клику на "добавить" сотрудника отправляется запрос на вставку значений
 	$(document).on('submit', '#add-employee' ,function(e) {
@@ -98,7 +98,6 @@ $(document).ready(function() {
 			return false;
 
 		if(!$(data.client_id).is(':disabled')){
-			console.log(true);
 			if(data.client_id == ''){
 				$(this).find('#accommodation-select-client-field').addClass('validate');
 				return false;
@@ -107,12 +106,11 @@ $(document).ready(function() {
 
 		console.log(data);
 
-		if(data.check_new_client == false){
-			console.log(false);
+		if(data.check_new_client == true){
+			addAccommodation(data, clientData);
 		} else{
-			console.log(true);
+			addAccommodation(data);
 		}
-		// addAccommodation(data);
 	});
 
 	// по клику на элемент списка посылается AJAX для подгрузки информации о сотруднике в правой таблице
@@ -396,6 +394,7 @@ function addClient(data){
 	})
 	.done(function(data) {
 		getClientsList();
+		$('#add-client')[0].reset();
 	})
 	.fail(function(){
 		alert("error");
@@ -404,28 +403,64 @@ function addClient(data){
 
 
 function addAccommodation(data, clientData){
-	$.ajax({
-		url: './php_functions/accommodations/add_accommodation.php',
-		type: 'POST',
-		data: {
-			date_in						: data.date_in,
-			date_out					: data.date_out,
-			booking_checkbox	: data.booking_checkbox,
-			room_number				: data.room_number,
-			payment_method		: data.payment_method,
-			client_id					: data.client_id,
-			check_new_client	: data.check_new_client,
-			amount_to_pay			: data.amount_to_pay,
-			amount_pay				: data.amount_pay,
-			amount_to_booking : data.amount_to_booking
-		},
-	})
-	.done(function(data) {
-		$('.js-accom-content').html(data);
-	})
+	var args;
+	if(arguments.length == 1){
+		args = 1;
+		$.ajax({
+			url: './php_functions/accommodations/add_accommodation.php',
+			type: 'POST',
+			data: {
+				args 							: args,
+				date_in						: data.date_in,
+				date_out					: data.date_out,
+				booking_checkbox	: data.booking_checkbox,
+				room_number				: data.room_number,
+				payment_method		: data.payment_method,
+				client_id					: data.client_id,
+				check_new_client	: data.check_new_client,
+				amount_to_pay			: data.amount_to_pay,
+				amount_pay				: data.amount_pay,
+				amount_to_booking : data.amount_to_booking
+			},
+		})
+		.done(function(data) {
+			$('.js-accom-content').html(data);
+			location.reload();
+		});
+	} else if (arguments.length == 2){
+		args = 2;
+		$.ajax({
+			url: './php_functions/accommodations/add_accommodation.php',
+			type: 'POST',
+			data: {
+				args 							: args,
+				date_in						: data.date_in,
+				date_out					: data.date_out,
+				booking_checkbox	: data.booking_checkbox,
+				room_number				: data.room_number,
+				payment_method		: data.payment_method,
+				client_id					: data.client_id,
+				check_new_client	: data.check_new_client,
+				amount_to_pay			: data.amount_to_pay,
+				amount_pay				: data.amount_pay,
+				amount_to_booking : data.amount_to_booking,
+				fname 	: clientData.fname,
+				sname 	: clientData.sname,
+				mname 	: clientData.mname,
+				passport: clientData.passport,
+				tel 		: clientData.tel,
+				email 	: clientData.email,
+				country : clientData.country,
+				comment : clientData.comment
+			},
+		})
+		.done(function(data) {
+			$('.js-accom-content').html(data);
+			location.reload();
+		});
+	}
+	
 }
-
-
 
 // **************************
 

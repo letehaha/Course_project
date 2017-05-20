@@ -184,7 +184,9 @@ body {
 .btn {
   border: none;
   background-color: #ccc;
-  cursor: pointer; }
+  cursor: pointer;
+  font-size: 16px;
+  text-transform: uppercase; }
 
 .transition-light {
   -webkit-transition: .3s;
@@ -260,7 +262,8 @@ input:invalid {
   margin-bottom: 30px; }
 
 .form {
-  margin-bottom: 40px; }
+  margin-bottom: 40px;
+  display: inline-block; }
   .form input,
   .form select,
   .form option,
@@ -340,6 +343,21 @@ input:invalid {
   .list__item_cell:first-child {
     border-left: 2px solid #ccc; }
 
+.btn--blue-style {
+  padding: 5px 10px;
+  border: 1px solid #34495e;
+  color: #34495e;
+  background-color: #fff;
+  -webkit-transition: .3s ease-out;
+  transition: .3s ease-out;
+  font-weight: 300; }
+  .btn--blue-style:hover {
+    background-color: #34495e;
+    color: #fff; }
+
+.textarea--default {
+  width: 420px; }
+
 @-webkit-keyframes changed_field {
   from {
     opacity: 0; }
@@ -373,3 +391,16 @@ input:invalid {
   display: none; }
   .client-form.is-visible {
     display: block; }
+
+.add-client__submit {
+  margin-top: auto;
+  line-height: 26px;
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none; }
+
+.form .add-client__comment-label {
+  width: 440px;
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none; }

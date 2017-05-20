@@ -184,7 +184,9 @@ body {
 .btn {
   border: none;
   background-color: #ccc;
-  cursor: pointer; }
+  cursor: pointer;
+  font-size: 16px;
+  text-transform: uppercase; }
 
 .transition-light {
   -webkit-transition: .3s;

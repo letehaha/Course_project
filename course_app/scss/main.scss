@@ -6,7 +6,7 @@
 .sidebar{
 	width: 170px;
 	height: 100vh;
-	background-color: rgba(52, 73, 94,1.0);
+	background-color: $blue_style;
 	display: flex;
 	align-items: center;
 	position: fixed;
@@ -42,6 +42,7 @@
 
 .form{
 	margin-bottom: 40px;
+	display: inline-block;
 	input,
 	select,
 	option,
@@ -112,6 +113,24 @@
 	}
 }
 
+.btn--blue-style{
+	padding: 5px 10px;
+	border: 1px solid $blue_style;
+	color: $blue_style;
+	background-color: #fff;
+	transition: .3s ease-out;
+	font-weight: 300;
+	&:hover{
+		background-color: $blue_style;
+		color: #fff;
+	}
+}
+
+.textarea--default{
+	width: 420px;
+}
+
 @import 'pages/employees.scss';
 @import 'pages/rooms.scss';
 @import 'pages/accommodation.scss';
+@import 'pages/clients.scss';
