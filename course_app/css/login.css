@@ -189,7 +189,6 @@ body {
   text-transform: uppercase; }
 
 .transition-light {
-  -webkit-transition: .3s;
   transition: .3s; }
 
 label {
@@ -224,6 +223,53 @@ textarea {
 
 input:invalid {
   border: 2px solid red; }
+
+input:disabled {
+  background-color: #eee;
+  border: 1px solid #eee; }
+
+.notification {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  visibility: hidden;
+  opacity: 0;
+  transition: .1s ease-out;
+  z-index: 50;
+  padding-top: 10vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+  .notification .notification-message {
+    display: inline-block;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 6px 7px 5px rgba(0, 0, 0, 0.2);
+    font-size: 18px;
+    text-align: center;
+    max-width: 400px;
+    visibility: hidden;
+    opacity: 0;
+    transition: .4s ease-out;
+    -webkit-transform: scale(0.6) translateY(-50px);
+            transform: scale(0.6) translateY(-50px); }
+  .notification--is-show {
+    visibility: visible;
+    opacity: 1; }
+    .notification--is-show .notification-message {
+      -webkit-transform: scale(1) translateY(0px);
+              transform: scale(1) translateY(0px);
+      visibility: visible;
+      opacity: 1; }
 
 main {
   background-color: #fff;

@@ -45,3 +45,45 @@ textarea{
 input:invalid{
 	border: 2px solid red;
 }
+input:disabled{
+	background-color: #eee;
+	border: 1px solid #eee;
+}
+.notification{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(255,255,255,.9);
+	visibility: hidden;
+	opacity: 0;
+	transition: .1s ease-out;
+	z-index: 50;
+	padding-top: 10vh;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	.notification-message{
+		display: inline-block;
+		padding: 10px;
+		background-color: #fff;
+		box-shadow: 0 6px 7px 5px rgba(0,0,0,.2);
+		font-size: 18px;
+		text-align: center;
+		max-width: 400px;
+		visibility: hidden;
+		opacity: 0;
+		transition: .4s ease-out;
+		transform: scale(.6) translateY(-50px);
+	}
+	&--is-show{
+		visibility: visible;
+		opacity: 1;
+		.notification-message{
+			transform: scale(1) translateY(0px);
+			visibility: visible;
+			opacity: 1;
+		}
+	}
+}

@@ -1,44 +1,16 @@
+var SERVICES, // have services checkbox value for accommodation
+	ACCOMMODATIONSUCCESS = 'Заселение прошло успешно'; 
+
 $(document).ready(function() {
 
-	// var loadPage = function(href){
-	// 	$.ajax({
-	// 		url: 'service.php',
-	// 		method: 'GET',
-	// 		cache: false,
-	// 		data: {
-	// 			link: href
-	// 		},
-	// 		success: function(data){
-	// 			$('.pjax-content').html(data);
-	// 			getEmployeesList();
-	// 			getClientsList();
-	// 			getRoomsList();
-	// 			normilizeEmployeesTable();
-	// 			normilizeRoomsTable();
-	// 			setAccommodationInfo();
-	// 		}
-	// 	});
-	// };
-
-	// $(window).on('popstate', function(){
-	// 	loadPage(location.pathname.split('/').pop());
-	// });
-
+	setAccommodationInfo();
 	getEmployeesList();
 	getClientsList();
 	getRoomsList();
+	getAccommodationList();
 	normilizeEmployeesTable();
 	normilizeRoomsTable();
-	setAccommodationInfo();
-
-	// $(document).on('click', '.sidebar-panel__item-link', function(e) {
-	// 	var href = $(this).attr('href');
-	// 	$('.sidebar-panel__item-link').removeClass('active');
-	// 	$(this).addClass('active');
-	// 	history.pushState(null, null, href);
-	// 	loadPage(href);
-	// 	e.preventDefault();
-	// });
+	normilizeAccommodationTable();
 
 	// по клику на "добавить" сотрудника отправляется запрос на вставку значений
 	$(document).on('submit', '#add-employee' ,function(e) {
@@ -124,6 +96,11 @@ $(document).ready(function() {
 		getInfoAboutClient(id);
 	});
 
+	$(document).on('click', '.js-payment__item', function(e) {
+		var id = $(this).attr('data-payment-id');
+		getInfoAboutPayments(id);
+	});
+
 	$(document).on('click', '.js-rooms__item', function(e) {
 		var id = $(this).attr('data-room-id');
 		getInfoAboutRoom(id);
@@ -158,10 +135,14 @@ $(document).ready(function() {
     });
 	});
 
+	$(document).on('click', '.js-client__item-popup, .js-client__room-popup, .js-payment__payment-popup', function(e){
+		$('.info-popup-container').toggleClass('info-popup-container--is-show');
+	});
+
 	$(document).on('change', '#accommodation-select-room', function(e) {
 		var option 		= $(this).find('option:selected'),
-				attrPrice = option.attr('data-price'),
-				attrSize	= option.attr('data-room-size');
+			attrPrice 	= option.attr('data-price'),
+			attrSize	= option.attr('data-room-size');
 		$(this).attr('data-price', attrPrice);
 		$(this).attr('data-room-size', attrSize);
 		getAccommodationPrice();
@@ -205,13 +186,13 @@ $(document).ready(function() {
 	});
 
 	$(document).on('change', '#accommodation-date-in, #accommodation-date-out', function(e){
-		var constDay 		= 86400000,
-				dateIn 			= $('#accommodation-date-in'),
-				dateOut			= $('#accommodation-date-out'),
-				dateInVal 	= dateIn.val(),
-				dateOutVal	=	dateOut.val(),
-				newDateIn 	= new Date(dateInVal),
-				newDateOut	= new Date(dateOutVal);
+	var 	constDay 	= 86400000,
+			dateIn 		= $('#accommodation-date-in'),
+			dateOut		= $('#accommodation-date-out'),
+			dateInVal 	= dateIn.val(),
+			dateOutVal	= dateOut.val(),
+			newDateIn 	= new Date(dateInVal),
+			newDateOut	= new Date(dateOutVal);
 
 		if($(this).val() == '')
 			$(this).addClass('validate');
@@ -229,9 +210,34 @@ $(document).ready(function() {
 			dateOut.siblings('#data-accommodation-days').attr('data-accommodation-days', '');
 		}
 	});
-  
+  	
+  	$(document).on('change', '#accommodation-date-in, .accommodation-service-item', function (ev) {
+	    SERVICES = $('.accommodation-service-item:checked').map(function() {
+	        return $(this).val();
+	    }).get();
+	    getAccommodationPrice();
+	});
+
+	$(document).mouseup(function (e){
+	    var div = $('#info-popup');
+	    if(div.parent().hasClass('info-popup-container--is-show'))
+		    if (!div.is(e.target) && div.has(e.target).length === 0)
+				div.parent().removeClass('info-popup-container--is-show')
+	  });
 
 });
+
+
+
+function showNotificationPopup(message){
+	var popup 				= $('#notification'),
+			msgContainer 	= $('#notification-message');
+	popup.addClass('notification--is-show');
+	msgContainer.text(message);
+	setTimeout(function(){
+		popup.removeClass('notification--is-show');
+	}, 2000);
+}
 
 function checkAmoutPay(){
 	var amountPayField 	= $('#accommodation-amount-pay'),
@@ -252,20 +258,30 @@ function checkAmoutPay(){
 }
 
 function getAccommodationPrice(){
-	var days 	= $('#data-accommodation-days').attr('data-accommodation-days'),
-			price = $('#accommodation-select-room').attr('data-price'),
-			size 	=	$('#accommodation-select-room').attr('data-room-size'),
-			bookingStatus	= $('#accommodation-booking-checkbox'),
-			amountToPay;
-	
-	if(bookingStatus.is(':checked'))
-		amountToPay = (parseInt(price) * parseInt(size)) * 1;
-	else
-		amountToPay = (parseInt(price) * parseInt(size)) * parseInt(days);
+	var	amountToPay,
+			sum = 0,
+			$days 					= $('#data-accommodation-days').attr('data-accommodation-days'),
+			$price 					= $('#accommodation-select-room').attr('data-price'),
+			$size 					=	$('#accommodation-select-room').attr('data-room-size'),
+			$bookingStatus	= $('#accommodation-booking-checkbox').is(':checked'),
+			$services 			= $('.accommodation-service-item:checked'),
+			servicesPrice 	= $services.map(function() {
+										    	return $(this).attr('data-price');
+										  	}).get();
 
-	$('#accommodation-amount-to-pay').attr('data-amount-to-pay', (parseInt(price) * parseInt(size)) * parseInt(days));
+	for(var i = 0; i < servicesPrice.length; i++){
+    sum += parseInt(servicesPrice[i]);
+  }
+
+	if($bookingStatus)
+		amountToPay = (parseInt($price) * parseInt($size)) * 1 + sum;
+	else
+		amountToPay = (parseInt($price) * parseInt($size)) * parseInt($days) + sum;
+
+	$('#accommodation-amount-to-pay').attr('data-amount-to-pay', (parseInt($price) * parseInt($size)) * parseInt($days)) + sum;
 	$('#accommodation-amount-to-pay').val(amountToPay);
 }
+
 
 function setAccommodationInfo(){
 	var selectRoom 					= $('#accommodation-select-room'),
@@ -308,6 +324,17 @@ function normilizeRoomsTable(){
 		$('.js-rooms__type').maxWidth();
 		$('.js-rooms__price').maxWidth();
 		$('.js-rooms__service').maxWidth();
+	}, 50);
+};
+
+function normilizeAccommodationTable(){
+	setTimeout(function(){
+		$('.js-ac_date-in').maxWidth();
+		$('.js-ac_date-out').maxWidth();
+		$('.js-ac_booking').maxWidth();
+		$('.js-ac_payment').maxWidth();
+		$('.js-ac_client').maxWidth();
+		$('.js-ac_room').maxWidth();
 	}, 50);
 };
 
@@ -357,6 +384,50 @@ function getRoomsList(id_employee){
 		alert("error");
 	})
 };
+
+function getServicesList(){
+	$.ajax({
+		url: './php_functions/service/get_services.php',
+		type: 'POST',
+	})
+	.done(function(data) {
+
+	})
+	.fail(function() {
+		alert('error');
+	})
+	
+}
+
+function getInfoAboutPayments(id){
+	$.ajax({
+		url: './php_functions/payments/get_payments_list.php',
+		type: 'POST',
+		data: {id: id},
+	})
+	.done(function(data) {
+		$('#info-popup').html(data);
+	})
+	.fail(function() {
+		alert('error');
+	})
+	
+}
+
+function getAccommodationList(){
+	$.ajax({
+		url: './php_functions/accommodations/get_booking_list.php',
+		type: 'POST',
+	})
+	.done(function(data) {
+		$('.booking__list').html(data);
+		
+	})
+	.fail(function() {
+		alert('error');
+	})
+	
+}
 
 // **************************
 
@@ -411,6 +482,7 @@ function addAccommodation(data, clientData){
 			type: 'POST',
 			data: {
 				args 							: args,
+				services 					: SERVICES,
 				date_in						: data.date_in,
 				date_out					: data.date_out,
 				booking_checkbox	: data.booking_checkbox,
@@ -425,7 +497,10 @@ function addAccommodation(data, clientData){
 		})
 		.done(function(data) {
 			$('.js-accom-content').html(data);
-			location.reload();
+			showNotificationPopup(ACCOMMODATIONSUCCESS);
+			setTimeout(function(){
+				location.reload();
+			},2000);
 		});
 	} else if (arguments.length == 2){
 		args = 2;
@@ -434,6 +509,7 @@ function addAccommodation(data, clientData){
 			type: 'POST',
 			data: {
 				args 							: args,
+				services 					: SERVICES,
 				date_in						: data.date_in,
 				date_out					: data.date_out,
 				booking_checkbox	: data.booking_checkbox,
@@ -456,7 +532,10 @@ function addAccommodation(data, clientData){
 		})
 		.done(function(data) {
 			$('.js-accom-content').html(data);
-			location.reload();
+			showNotificationPopup(ACCOMMODATIONSUCCESS);
+			setTimeout(function(){
+				location.reload();
+			},2000);
 		});
 	}
 	
@@ -543,19 +622,19 @@ function updateClientInfo(id_client, first_name, second_name, middle_name, passp
 	})
 };
 
-// function submitToUpdateRoom(form){
-// 	var room_number = form.find('input[name="room_number"]').val(),
-// 			room_status = form.find('input[name="room_status"]').val()
-// 			room_size 	= form.find('input[name="room_size"]').val(),
-// 			room_type 	= form.find('input[name="room_type"]').val(),
-// 			price 			= form.find('input[name="price"]').val(),
-// 			email 			= form.find('input[name="email"]').val(),
-// 			country 		= form.find('input[name="country"]').val(),
-// 			comment 		= form.find('textarea[name="comment"]').val(),
-// 			id_client 	= form.attr('data-client-id');
+function submitToUpdateRoom(form){
+	var room_number = form.find('input[name="room_number"]').val(),
+			room_status = form.find('input[name="room_status"]').val()
+			room_size 	= form.find('input[name="room_size"]').val(),
+			room_type 	= form.find('input[name="room_type"]').val(),
+			price 			= form.find('input[name="price"]').val(),
+			email 			= form.find('input[name="email"]').val(),
+			country 		= form.find('input[name="country"]').val(),
+			comment 		= form.find('textarea[name="comment"]').val(),
+			id_client 	= form.attr('data-client-id');
 
-// 	updateRoomInfo(id_client, first_name, second_name, middle_name, passport, phone, email, country, comment);
-// }
+	updateRoomInfo(id_client, first_name, second_name, middle_name, passport, phone, email, country, comment);
+}
 
 
 // *****************************
@@ -602,7 +681,7 @@ function getInfoAboutClient(id){
 	})
 	.done(function(data) {
 		$('.js-client-content').html(data);
-
+		$('#info-popup').html(data);
 		var form = $('#js-client-info-form');
 		form.bind('submit', function(e){
 			e.preventDefault();
@@ -632,7 +711,7 @@ function getInfoAboutRoom(id){
 	})
 	.done(function(data) {
 		$('.js-rooms-content').html(data);
-
+		$('#info-popup').html(data);
 		var form = $('#js-room-info-form');
 		form.bind('submit', function(e){
 			e.preventDefault();
@@ -675,22 +754,23 @@ function deleteEployee(employee_id){
 	})
 }
 
-function deleteClient(client_id){
-	$.ajax({
-		url: './php_functions/clients/delete_client.php',
-		type: 'POST',
-		data: {
-			client_id:client_id
-		},
-	})
-	.done(function(data) {
-		getClientsList();
-		alert('Был удален клиент:' + data);
-	})
-	.fail(function() {
-		alert("error");
-	})
-}
+// function deleteClient(client_id){
+// 	$.ajax({
+// 		url: './php_functions/clients/delete_client.php',
+// 		type: 'POST',
+// 		data: {
+// 			client_id:client_id
+// 		},
+// 	})
+// 	.done(function(data) {
+// 		getClientsList();
+// 		if(data == 0000)
+// 			alert('Пользователь не может быть удален! Возможно он заселен в какую-то комнату.');
+// 	})
+// 	.fail(function() {
+// 		alert("error");
+// 	})
+// }
 
 // *****************************
 

@@ -1,13 +1,13 @@
-@import 'includes/fonts.scss';
-@import 'includes/reset.scss';
-@import 'includes/vars.scss';
-@import 'includes/default-style.scss';
+@import 'includes/fonts';
+@import 'includes/reset';
+@import 'includes/vars';
+@import 'includes/default-style';
 
 .sidebar{
 	width: 170px;
 	height: 100vh;
 	background-color: $blue_style;
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	position: fixed;
 	left: 0;
@@ -85,6 +85,7 @@
 .list{
 	padding: 10px;
 	font-size: 14px;
+	display: inline-block;
 }
 .list__item{
 	display: flex;
@@ -108,9 +109,13 @@
 .list__item_cell{
 	padding: 3px 10px;
 	border-right: 2px solid #ccc;
+	flex-basis: 1;
 	&:first-child{
 		border-left: 2px solid #ccc;
 	}
+}
+.list__item_cell--auto-width{
+	flex-shrink: 1;
 }
 
 .btn--blue-style{
@@ -130,7 +135,7 @@
 	width: 420px;
 }
 
-@import 'pages/employees.scss';
-@import 'pages/rooms.scss';
-@import 'pages/accommodation.scss';
-@import 'pages/clients.scss';
+@import 'pages/employees';
+@import 'pages/rooms';
+@import 'pages/accommodation';
+@import 'pages/clients';

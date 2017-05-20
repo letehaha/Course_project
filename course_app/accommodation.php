@@ -19,6 +19,11 @@
 
 	$rooms = $sql_rooms->fetchAll(PDO::FETCH_ASSOC);
 
+	$sql_services = $db->prepare('SELECT * FROM services');
+	$sql_services->execute();
+
+	$services = $sql_services->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <?php require 'header.php'; ?>
 
@@ -70,12 +75,20 @@
 							</label>
 						</div>
 						<div class="form-wrapper">
+				<?php 	foreach ($services as $value) { 	?>
+							<label for="service-<?=$value['id_service']?>">
+								<p><?=$value['service_name']?> (<?=$value['service_price']?>)</p>
+								<input class="accommodation-service-item" type="checkbox" id="service-<?=$value['id_service']?>" value="<?=$value['id_service']?>" data-price="<?=$value['service_price']?>">
+							</label>
+				<?php 	} 	?>
+						</div>
+						<div class="form-wrapper">
 							<label style="width: 420px;" for="accommodation-field-quest" class="form-wrapper_child">
 								<p>ФИО гостя</p>
 								<input name="client_name" type="search" id="accommodation-select-client-field" placeholder="ФИО гостя" list="accommodation-client-list" class="form-wrapper_child required" autocomplete="off" data-selected-id-client>
 								<datalist id="accommodation-client-list">
 						<?php 	foreach ($clients as $value) { 	?>
-									<option  class="accommodation-client-list-item" data-id-client="<?=$value['id_client']?>" value="<?=$value['second_name'].' '.$value['first_name'].' '.$value['middle_name']?>"></option>
+									<option class="accommodation-client-list-item" data-id-client="<?=$value['id_client']?>" value="<?=$value['second_name'].' '.$value['first_name'].' '.$value['middle_name']?>"></option>
 						<?php 	} 	?>
 								</datalist>
 							</label>

@@ -26,6 +26,6 @@
             <button type="button" class="change-client">Изменить</button>
             <button type="submit" id="js-save-change-client" class="save-change-client is-hide" data-id="<?= $id ?>">Сохранить изменения</button>
         </form>
-       <button type="button" class="delete" data-client-id="<?= $value['id_client'] ?>">Удалить</button>
+       <!-- <button type="button" class="delete" data-client-id="<?= $value['id_client'] ?>">Удалить</button> -->
     </div>
 <?php } ?>

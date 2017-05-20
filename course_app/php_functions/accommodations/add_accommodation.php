@@ -15,7 +15,17 @@
 	$amount_pay 		= $_POST['amount_pay'];
 	$amount_to_booking 	= $_POST['amount_to_booking'];
 
-	
+	if(isset($_POST['services'])){
+		$services = $_POST['services'];
+
+		foreach ($services as $value) {
+			$add_service = $db->prepare('INSERT INTO servicetoroom (id_room, id_service) VALUES (:id_room, :id_service)');
+			$add_service->execute([
+				':id_room' 		=> $room_number,
+				':id_service' 	=> $value
+			]);
+		}
+	}
 
 	if($args_length == '1'){
 		$add_payment = $db->prepare('INSERT INTO payments (payment_method, id_client, amount_to_pay, amount_pay) VALUES (:payment_method, :client_id, :amount_to_pay, :amount_pay)');
