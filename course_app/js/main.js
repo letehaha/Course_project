@@ -1,6 +1,8 @@
 var SERVICES, // have services checkbox value for accommodation
     ACCOMMODATIONSUCCESS = 'Заселение прошло успешно!',
-    UPDATECLIENTSUCCESS = 'Обновление информации о клиенте прошло успешно!';
+    UPDATECLIENTSUCCESS = 'Обновление информации о клиенте прошло успешно!',
+    SHOW_BOOKING = 'Отобразить только бронь',
+    HIDE_BOOKING = 'Отобразить полный список';
 
 $(document).ready(function() {
 
@@ -135,12 +137,13 @@ $(document).ready(function() {
     // спрятать кнопку "Сохранить изменения" если кнопка "Изменить" неактивна
     $('.js-rooms-content .new-form #js-save-change-room').toggleClass('is-hide');
     // toggle disabled атрибут по клику на "Изменить"
-    $('.js-rooms-content .new-form .js-changeValue').prop('disabled', function(i, currentValue) {
+    $('.info-popup .new-form .js-changeValue').prop('disabled', function(i, currentValue) {
       return !currentValue;
     });
   });
 
-  $(document).on('click', '.js-client__item-popup, .js-client__room-popup, .js-payment__payment-popup', function(e){
+  $(document).on('click', '.js-info-popup', function(e){
+
     $('.info-popup-container').toggleClass('info-popup-container--is-show');
   });
 
@@ -155,14 +158,14 @@ $(document).ready(function() {
     getAccommodationPrice();
   });
 
-$(document).on('keyup', '#accommodation-amount-pay', function(e){
-	checkAmoutPay();
-});
+  $(document).on('keyup', '#accommodation-amount-pay', function(e){
+    checkAmoutPay();
+  });
 
-$(document).on('change', '#accommodation-booking-checkbox', function(e){
-	getAccommodationPrice();
-	checkAmoutPay();
-});
+  $(document).on('change', '#accommodation-booking-checkbox', function(e){
+    getAccommodationPrice();
+    checkAmoutPay();
+  });
 
   $(document).on('change', '#accommodation-new-quest-checkbox', function(e){
     $('.js-client-form').toggleClass('is-visible');
@@ -261,9 +264,15 @@ $(document).on('change', '#accommodation-booking-checkbox', function(e){
 });
 
 
-$(document).on('click', '#change-id', function(){
+$(document).on('click', '#show-booking', function(){
 
   $('.booking__list').toggleClass('only-booking-true');
+  $(this).toggleClass('is-active');
+
+  if($(this).hasClass('is-active'))
+    $(this).text(HIDE_BOOKING)
+  else
+    $(this).text(SHOW_BOOKING)
 
   // $.each($('.list__item'), function(index, val) {
   //     if($(val).hasClass('data-booking-true'))
@@ -739,7 +748,7 @@ function getInfoAboutClient(id){
     data: {id: id},
   })
   .done(function(data) {
-    $('.js-client-content').html(data);
+    // $('.js-client-content').html(data);
     $('#info-popup').html(data);
     var form = $('#js-client-info-form');
     form.bind('submit', function(e){
@@ -774,7 +783,7 @@ function getInfoAboutRoom(id){
     data: {id: id},
   })
   .done(function(data) {
-    $('.js-rooms-content').html(data);
+    // $('.js-rooms-content').html(data);
     $('#info-popup').html(data);
     var form = $('#js-room-info-form');
     form.bind('submit', function(e){

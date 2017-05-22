@@ -32,7 +32,7 @@
 		<div class="list__item_cell rooms__item_cell js-rooms__service">Сервисы</div>
 	</div>
 <?php foreach ($rooms as $value ) { ?>
-	<div class="list__item rooms__item js-rooms__item" data-room-id="<?=$value['id_room'] ?>">
+	<div class="list__item rooms__item js-rooms__item js-info-popup" data-room-id="<?=$value['id_room'] ?>">
 		<div class="list__item_cell rooms__item_cell rooms__name js-rooms__name"><?=$value['room_number'] ?></div>
 		<div class="list__item_cell rooms__item_cell rooms__size js-rooms__type" data-id-room-type="<?=$value['id_room_type'] ?>"><?=$value['room_type'] ?></div>
 		<div class="list__item_cell rooms__item_cell rooms__status js-rooms__status"><?=$value['room_status'] ?></div>

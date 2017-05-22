@@ -14,7 +14,13 @@
 
 	$payment_methods = $sql_payment_methods->fetchAll(PDO::FETCH_ASSOC);
 
-	$sql_rooms = $db->prepare('SELECT * FROM rooms, roomtype WHERE rooms.id_room_type = roomtype.id_room_type AND room_status = 1 ORDER BY rooms.room_number');
+	$sql_rooms = $db->prepare('
+		SELECT * 
+		FROM rooms, roomtype 
+		WHERE rooms.id_room_type = roomtype.id_room_type 
+		AND room_status = 1 
+		ORDER BY rooms.room_number
+	');
 	$sql_rooms->execute();
 
 	$rooms = $sql_rooms->fetchAll(PDO::FETCH_ASSOC);
@@ -107,7 +113,7 @@
 								<input id="accommodation-amount-pay" class="accommodation-amount-pay required" type="number">
 							</label>
 						</div>
-						<button type="submit" class="submit">Добавить</button>
+						<button type="submit" class="btn submit">Добавить</button>
 					
 						<div class="form client-form js-client-form">
 							<h2 class="form-title">Информация о клиенте</h2>

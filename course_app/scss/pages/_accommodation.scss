@@ -34,8 +34,22 @@
 			margin-bottom: 10px;
 		}
 	}
-	button{
+	button:not(.change-room){
 		display: none;
+	}
+	.form-wrapper{
+		flex-direction: column;
+
+		.form-wrapper_child{
+			margin-right: 0;
+
+			&:not(:last-child){
+				margin-bottom: 10px;
+			}
+		}
+	}
+	.form{
+		margin-bottom: 0;
 	}
 }
 

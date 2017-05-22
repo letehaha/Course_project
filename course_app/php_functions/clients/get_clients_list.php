@@ -20,7 +20,7 @@
 		<div class="list__item_cell list__item_cell--auto-width js-cl_comment">Комментарий</div>
 	</div>
 <?php foreach ($clients as $value) { ?>
-	<div class="list__item client__item js-client__item" data-client-id="<?=$value['id_client'] ?>">
+	<div class="list__item client__item js-client__item js-info-popup" data-client-id="<?=$value['id_client'] ?>">
 		<div class="list__item_cell js-cl_fname"><?=$value['first_name'] ?></div>
 		<div class="list__item_cell js-cl_sname"><?=$value['second_name'] ?></div>
 		<div class="list__item_cell js-cl_mname"><?=$value['middle_name'] ?></div>
