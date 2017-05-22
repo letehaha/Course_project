@@ -17,7 +17,7 @@
 		<div class="pjax-content">
 			<div class="clients_wrapper">
 				<div>
-					<form class="form" action="#" id="add-client" form-page="contacts">
+					<form class="form" id="add-client" form-page="contacts">
 						<div class="form-wrapper">
 							<label class="form-wrapper_child" for="add-client-name">
 								<p>Имя</p>
@@ -35,7 +35,7 @@
 						<div class="form-wrapper">
 							<label class="form-wrapper_child" for="add-client-passport">
 								<p>Паспортные данные</p>
-								<input id="add-client-passport" type="text" required name="passport" placeholder="Паспорт">
+								<input id="add-client-passport" type="text" required name="passport" placeholder="Паспорт" maxlength="10">
 							</label>
 							<label class="form-wrapper_child" for="add-client-tel">
 								<p>Номер телефона</p>

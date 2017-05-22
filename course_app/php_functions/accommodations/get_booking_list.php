@@ -23,10 +23,16 @@
 		<div class="list__item_cell js-ac_client">Клиент</div>
 	</div>
 <?php foreach ($accommodations as $value) { ?>
-	<div class="list__item accommodation__item" data-client-id="<?=$value['id_accommodation'] ?>">
+	<div class="list__item accommodation__item <?php
+
+		 if($value['booking_status'] == '1'){
+		 	echo 'data-booking-true';
+		 }
+
+		 ?>" data-client-id="<?=$value['id_accommodation'] ?>">
 		<div class="list__item_cell js-ac_date-in"><?=$value['date_in'] ?></div>
 		<div class="list__item_cell js-ac_date-out"><?=$value['date_out'] ?></div>
-		<div class="list__item_cell js-ac_booking"><?=$value['booking_status'] ?></div>
+		<div class="list__item_cell js-ac_booking js-change-booking-value"><?=$value['booking_status'] ?></div>
 		<div class="list__item_cell js-ac_room js-rooms__item js-client__room-popup" data-room-id="<?=$value['id_room'] ?>"><?=$value['room_number'] ?></div>
 		<div class="list__item_cell js-ac_payment js-payment__item js-payment__payment-popup" data-payment-id="<?=$value['payments_id_payment'] ?>"><?=$value['payments_id_payment']?></div>
 		<div class="list__item_cell js-ac_client js-client__item js-client__item-popup" data-client-id="<?=$value['id_client'] ?>"><?=$value['first_name']?> <?=$value['middle_name']?> <?=$value['second_name']?></div>

@@ -87,13 +87,28 @@
 	font-size: 14px;
 	display: inline-block;
 }
+.only-booking-true{
+	.list__item:not(.data-booking-true){
+		opacity: 0;
+		visibility: hidden;
+		position: absolute;
+		top: -100px;
+	}
+	.data-booking-true{
+	}
+}
 .list__item{
 	display: flex;
 	border-bottom: 2px solid #ccc;
 	background-color: #eee;
+	visibility: visible;
+	opacity: 1;
+	transition: .5s ease-out;
+
 	&:nth-child(odd){
 		background-color: #fafafa;
 	}
+
 	&.changed_field{
 		background-color: #fff;
 		animation: 3s changed_field;
@@ -109,7 +124,7 @@
 .list__item_cell{
 	padding: 3px 10px;
 	border-right: 2px solid #ccc;
-	flex-basis: 1;
+	max-width: 250px;
 	&:first-child{
 		border-left: 2px solid #ccc;
 	}

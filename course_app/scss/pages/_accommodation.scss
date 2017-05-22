@@ -38,3 +38,47 @@
 		display: none;
 	}
 }
+
+.virtual-tooltip-error{
+	position: relative;
+
+	&:after{
+		position: absolute;
+		content: 'Заселение задним числом невозможно!';
+		top: -27px;
+		left: 0;
+		background-color: rgba(0,0,0,0.8);
+		color: #fff;
+		font-size: 13px;
+		text-align: center;
+		padding: 4px;
+		border-radius: 5px;
+	}
+
+	&:before{
+		position: absolute;
+		content: '';
+		top: 11px;
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 8px 17px 0 17px;
+		border-color: rgba(0,0,0,0.8) transparent transparent transparent;
+		left: calc(50% - 17px);
+	}
+}
+
+.date-in-error{
+	@extend .virtual-tooltip-error;
+
+	&:after{
+		content: 'Заселение задним числом невозможно!';
+	}
+}
+.date-out-error{
+	@extend .virtual-tooltip-error;
+
+	&:after{
+		content: 'Нельзя выселиться задним числом или раньше заселения!';
+	}
+}
