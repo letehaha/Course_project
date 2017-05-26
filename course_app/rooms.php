@@ -1,5 +1,5 @@
 <?php require 'header.php'; ?>
-  <div class="info-popup-container">
+  <div class="info-popup-container info-popup-container--x2">
     <div id="info-popup" class="info-popup">
 
     </div>

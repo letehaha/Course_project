@@ -66,7 +66,7 @@
 								<p>Номер комнаты</p>
 								<select name="room_number" data-price data-room-size id="accommodation-select-room" class="required">
 						<?php 	foreach ($rooms as $value) { 	?>
-									<option class="accommodation-select-room-item" data-price="<?=$value['price']?>" data-room-size="<?=$value['room_size']?>" value="<?=$value['id_room']?>"><?=$value['room_number']?> (<?=$value['room_size']?>)</option>
+									<option class="accommodation-select-room-item" data-price="<?=$value['price']?>" data-room-size="<?=$value['room_size']?>" value="<?=$value['id_room']?>"><?=$value['room_number']?> | <?=$value['room_type']?> | <?=$value['room_size']?> | <?=$value['price']?>/1</option>
 						<?php 	} 	?>
 								</select>
 							</label>
@@ -90,7 +90,7 @@
 						</div>
 						<div class="form-wrapper">
 							<label style="width: 420px;" for="accommodation-field-quest" class="form-wrapper_child">
-								<p>ФИО гостя</p>
+								<p>ФИО постояльца</p>
 								<input name="client_name" type="search" id="accommodation-select-client-field" placeholder="ФИО гостя" list="accommodation-client-list" class="form-wrapper_child required" autocomplete="off" data-selected-id-client>
 								<datalist id="accommodation-client-list">
 						<?php 	foreach ($clients as $value) { 	?>
@@ -99,7 +99,7 @@
 								</datalist>
 							</label>
 							<label for="accommodation-new-quest-checkbox" class="form-wrapper_child accommodation-new-quest-checkbox-label">
-								<p>Новый гость</p>
+								<p>Новый постоялец</p>
 								<input id="accommodation-new-quest-checkbox" class="accommodation-new-quest-checkbox" type="checkbox">
 							</label>
 						</div>
@@ -116,7 +116,7 @@
 						<button type="submit" class="btn submit">Добавить</button>
 					
 						<div class="form client-form js-client-form">
-							<h2 class="form-title">Информация о клиенте</h2>
+							<h2 class="form-title">Информация о постояльце</h2>
 
 							<div class="form-wrapper">
 								<input type="text" autocomplete="off" name="fname" placeholder="Имя" class="form-wrapper_child required">

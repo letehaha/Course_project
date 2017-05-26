@@ -19,14 +19,19 @@
 	$room = $sql_get_info_about_room->fetchAll(PDO::FETCH_ASSOC);
 
 
-  $sql_get_info_about_status = $db->prepare('
-    SELECT DISTINCT room_status 
-    FROM rooms 
-  ');
+  $sql_get_info_about_types = $db->prepare('SELECT * FROM roomtype');
+  $sql_get_info_about_types->execute();
+  $rooms_types = $sql_get_info_about_types->fetchAll(PDO::FETCH_ASSOC);
 
+
+  $sql_get_info_about_status = $db->prepare('SELECT DISTINCT room_status FROM rooms');
   $sql_get_info_about_status->execute();
-
   $statuses = $sql_get_info_about_status->fetchAll(PDO::FETCH_ASSOC);
+
+
+  $sql_get_info_about_services = $db->prepare('SELECT id_service, service_name FROM services');
+  $sql_get_info_about_services->execute();
+  $service_list = $sql_get_info_about_services->fetchAll(PDO::FETCH_ASSOC);
 
 
 	$sql_services = $db->prepare('
@@ -44,7 +49,7 @@
 
 <?php foreach ($room as $value) { ?>
   <div class="room-item-info">
-    <form class="new-form" id="js-room-info-form" data-room-id="<?= $value['id_room'] ?>">
+    <form class="new-form room-info-form" id="js-room-info-form" data-room-id="<?= $value['id_room'] ?>">
       <div class="form-wrapper">
         <label class="form-wrapper_child" for="room_number">
           <p>Номер</p>
@@ -54,14 +59,31 @@
           <p>Статус</p>
           <input id="room_status" class="js-changeValue" name="room_status" type="text" disabled value="<?= $value['room_status'] ?>">
         </label>
+        <label class="form-wrapper_child" for="price" style="display: none;">
+          <select class="js-changeValue" disabled>
+            <option value="<?= $value['room_status'] ?>" selected disabled><?= $value['room_status'] ?></option>
+          <?php foreach ($statuses as $valst) { ?>
+            <option name="price" type="text" value="<?= $valst['room_status'] ?>"><?= $valst['room_status'] ?></option>
+          <?php } ?>
+          </select>
+        </label>
+      </div>
+      <div class="form-wrapper">
         <label class="form-wrapper_child" for="room_size">
           <p>Размер</p>
           <input id="room_size" class="js-changeValue" name="room_size" type="text" disabled value="<?= $value['room_size'] ?>">
         </label>
         <label class="form-wrapper_child" for="room_type">
           <p>Тип</p>
-          <input id="room_type" class="js-changeValue" name="room_type" type="text" disabled value="<?= $value['room_type'] ?>">
+          <select class="js-changeValue" disabled>
+              <option value="<?= $value['room_type'] ?>" selected disabled><?= $value['room_type'] ?></option>
+            <?php foreach ($rooms_types as $val) { ?>
+              <option name="price" type="text" value="<?= $val['id_room_type'] ?>"><?= $val['room_type'] ?></option>
+            <?php } ?>
+          </select>
         </label>
+      </div>
+      <div class="form-wrapper">
         <label class="form-wrapper_child" for="price">
           <p>Цена</p>  
           <input id="price" name="price" type="text" disabled value="<?= $value['price'] ?>">
@@ -71,19 +93,9 @@
           <?php 
           for($i = 0; $i < count($services); $i++){
             if($services[$i]['id_room'] == $value['id_room']){ ?>
-              <input class="js-changeValue" type="text" disabled value="<?= $services[$i]['service_name'] ?>">
+              <input type="text" disabled value="<?= $services[$i]['service_name'] ?>">
           <?php }
           } ?>
-        </label>
-      </div>
-      <div class="form-wrapper">
-        <label class="form-wrapper_child" for="price">
-          <select class="js-changeValue" disabled>
-            <option value="<?= $value['room_status'] ?>" selected disabled><?= $value['room_status'] ?></option>
-          <?php foreach ($statuses as $value) { ?>
-            <option name="price" type="text" value="<?= $value['room_status'] ?>"><?= $value['room_status'] ?></option>
-          <?php } ?>
-          </select>
         </label>
       </div>
       <button type="button" class="change-room">Изменить</button>
@@ -91,3 +103,12 @@
     </form>
   </div>
 <?php } ?>
+
+<!-- <div class="form-wrapper form-wrapper--two-row">
+  foreach ($service_list as $value) { ?>
+    <label class="form-wrapper_child booking-hidden"  for="">
+      <p><?= $value['service_name'] ?></p>
+      <input type="checkbox" value="<?= $value['id_service'] ?>">
+    </label>
+   } 
+</div> -->

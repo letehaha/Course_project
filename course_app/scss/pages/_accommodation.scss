@@ -9,7 +9,8 @@
 	position: fixed;
 	right: 0;
 	top: 20px;
-	max-width: 300px;
+	margin-bottom: 20px;
+	width: 300px;
 	padding: 20px;
 	background-color: #fff;
 	z-index: 10;
@@ -17,6 +18,23 @@
 	opacity: 0;
 	visibility: hidden;
 	transition: .25s ease-out;
+	max-height: calc(100vh - 60px); // 20 top, 20 bot, 20*2 padd
+	overflow-y: auto;
+
+	&--x2{
+		width: 600px;
+
+		.info-popup .form-wrapper{
+			flex-direction: row;
+
+			.form-wrapper_child{
+
+				&:not(:last-child){
+					margin-right: 20px;
+				}
+			}
+		}
+	}
 
 	&--is-show{
 		opacity: 1;
@@ -34,9 +52,10 @@
 			margin-bottom: 10px;
 		}
 	}
-	button:not(.change-room){
-		display: none;
-	}
+	// button:not(.change-room),
+	// button:not(.change-client){
+	// 	display: none;
+	// }
 	.form-wrapper{
 		flex-direction: column;
 
@@ -45,6 +64,16 @@
 
 			&:not(:last-child){
 				margin-bottom: 10px;
+			}
+		}
+
+		&--two-row{
+			flex-wrap: wrap;
+			justify-content: space-between;
+
+			.form-wrapper_child{
+				margin: 0 0 10px 0 !important;
+				width: 48%;
 			}
 		}
 	}
@@ -96,3 +125,34 @@
 		content: 'Нельзя выселиться задним числом или раньше заселения!';
 	}
 }
+
+.show-booking-container{
+	width: 100%;
+}
+
+.show-booking{
+	margin: 30px;
+}
+
+.booking-change-true{
+	display: none;
+}
+
+.info-popup-booking{
+	.booking-hidden,
+	.change-room,
+	.change-client,
+	button[type="submit"],
+	.amount_to_pay_booking-label{
+		display: none;
+	}
+	&.change-booking{
+		.booking-change-true,
+		button[type="submit"],
+		.amount_to_pay_booking-label{
+			display: block;
+		}
+	}
+}
+
+

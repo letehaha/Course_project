@@ -17,7 +17,7 @@
 		<div class="list__item_cell employees__item_cell employees__salary">Зарплата</div>
 	</div>
 <?php foreach ($employees as $value) { ?>
-	<div class="list__item employees__item js-employees__item" data-employee-id="<?=$value['id_employee'] ?>">
+	<div class="list__item employees__item js-employees__item js-info-popup" data-employee-id="<?=$value['id_employee'] ?>">
 		<div class="list__item_cell employees__item_cell employees__first-name js-employees__first-name"><?=$value['first_name'] ?></div>
 		<div class="list__item_cell employees__item_cell employees__second-name js-employees__second-name"><?=$value['second_name'] ?></div>
 		<div class="list__item_cell employees__item_cell employees__middle-name js-employees__middle-name"><?=$value['middle_name'] ?></div>

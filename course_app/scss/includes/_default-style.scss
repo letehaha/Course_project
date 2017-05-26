@@ -49,6 +49,10 @@ textarea{
 .validate{
 	border: 2px solid red;
 }
+.success{
+	border-color: green;
+	box-shadow: 0 0 11px -3px green;
+}
 input:invalid{
 	border: 2px solid red;
 }

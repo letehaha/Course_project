@@ -2,6 +2,10 @@
 
 	require('../../db-connect.php');
 
+	$date = $_POST['date'];
+
+	$date = intval($date);
+
 	$sql_accommodation = $db->prepare("CALL hide_accommodation()");
 	$sql_accommodation->execute();
 

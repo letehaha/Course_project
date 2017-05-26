@@ -1,59 +1,85 @@
-var showPassBtn = document.getElementById('js-show-pass'),
-		loginField	= document.getElementById('js-login-field'),
-		loginSubmit	= document.getElementById('js-login-submit'),
-		loginForm		= document.getElementById('js-login-form'),
-		inputField	= document.getElementById('js-input-field'),
-		password		= 'root';
+$(document).ready(function() {
+	var $showPassBtn = $('#js-show-pass'),
+  $loginField	 = $('#js-login-field'),
+  $loginSubmit = $('#js-login-submit'),
+  $loginForm	 = $('#js-login-form'),
+  $inputField	 = $('#js-input-field');
 
-function checkValue(){
-	console.log(this.value);
-	if(loginField.value !== ''){
-		showPassBtn.style.display = 'block';
-		showPassBtn.classList.add('fa-eye');
-		loginField.classList.add('error');
-		loginField.classList.remove('success');
-	} else{
-		showPassBtn.style.display = 'none';
-		showPassBtn.classList.remove('fa-eye');
-		showPassBtn.classList.remove('fa-eye-slash');
-		loginField.type = 'password';
-	}
-}
+  $showPassBtn.on('mousedown', function(){
+    $(this).removeClass('fa-eye');
+    $(this).addClass('fa-eye-slash');
+    $loginField.attr('type', 'text');
+  });
+  $showPassBtn.on('mouseup', function(){
+    $(this).removeClass('fa-eye-slash');
+    $(this).addClass('fa-eye');
+    $loginField.attr('type', 'password');
+  });
+  $showPassBtn.on('mousemove', function(){
+    $(this).removeClass('fa-eye-slash');
+    $(this).addClass('fa-eye');
+    $loginField.attr('type', 'password');
+  });
 
-showPassBtn.onmousedown  = function(){
-	this.classList.remove('fa-eye');
-	this.classList.add('fa-eye-slash');
-	loginField.type = 'text';
-}
-showPassBtn.onmouseup = function(){
-	this.classList.remove('fa-eye-slash');
-	this.classList.add('fa-eye');
-	loginField.type = 'password';
-}
-showPassBtn.onmousemove = function(){
-	this.classList.remove('fa-eye-slash');
-	this.classList.add('fa-eye');
-	loginField.type = 'password';
-}
+  $loginField.on('blur', function(){
+    if($(this).val() == ''){
+     $loginField.removeClass('error');
+     $loginField.removeClass('success');
+   }	
+ });
 
-loginField.onblur = function(){
-	if(this.value == ''){
-		loginField.classList.remove('error');
-		loginField.classList.remove('success');
-	}	
-}
+  $loginField.on('input', function(){
+    checkValue();
+  });
 
-loginForm.onsubmit = function(e){
-	if(loginField.value == password){
-		loginField.classList.remove('error');
-		loginField.classList.add('success');
-		return false;
-	} else{
-		inputField.classList.add('bounce');
-		loginField.classList.add('error');
-		setTimeout(function(){
-			inputField.classList.remove('bounce');	
-		}, 600);
-		return false;
-	}
-}
+  $(document).on('submit', $loginForm ,function(e) {
+    e.preventDefault();
+
+    var password = $loginField.val();
+
+    $.ajax({
+     url: './php_functions/login.php',
+     type: 'POST',
+     data: {password: password},
+   })
+    .done(function(data) {
+
+     if($loginField.val() == data){
+      $loginField.removeClass('error');
+      $loginField.addClass('success');
+      localStorage.setItem('password_status', 'true');
+      localStorage.setItem('password', data);
+      setTimeout(function(){
+       window.location.replace('/course_project/course_app/');	
+     }, 600);
+
+      return false;
+
+    } else{
+      $inputField.addClass('bounce');
+      $loginField.addClass('error');
+
+      setTimeout(function(){
+       $inputField.removeClass('bounce');	
+     }, 600);
+
+      return false;
+    }
+  })
+  });
+
+  function checkValue(){
+    console.log($loginField.val());
+    if($loginField.val() !== ''){
+     $showPassBtn.show();
+     $showPassBtn.addClass('fa-eye');
+     $loginField.addClass('error');
+     $loginField.removeClass('success');
+   } else{
+     $showPassBtn.hide();
+     $showPassBtn.removeClass('fa-eye');
+     $showPassBtn.removeClass('fa-eye-slash');
+     $loginField.attr('type', 'password');
+   }
+ };
+});
